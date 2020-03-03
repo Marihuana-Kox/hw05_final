@@ -58,7 +58,7 @@ def post_view(request, username, post_id):
     if Follow.objects.filter(user=request.user, author=author).exists():
         following = True
     count = Post.objects.filter(author=author).count()
-    items = Comment.objects.filter(post_id=post.pk)
+    items = Comment.objects.filter(post_id=post.pk).order_by("-created")
     form = CommentForm()
     return render(request, "posts/post.html", {"items": items, "form": form, "post": post, "count": count, "username": author, "following": following, "count_author": count_author, "count_user": count_user})
 

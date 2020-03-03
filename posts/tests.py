@@ -34,6 +34,11 @@ class TestStringMethods(TestCase):
         self.assertRedirects(response, reverse("index"), status_code=302,
                              target_status_code=200, msg_prefix='', fetch_redirect_response=True)
         print("Пользователь создал пост")
+        
+        """--------------------------------------------------"""
+        self.client.post("/auth/login/")
+        """--------------------------------------------------"""
+
         response = self.client.post(
             reverse("signup"), self.userDy, follow=True)
         self.assertRedirects(response, "/auth/login/",
@@ -48,7 +53,7 @@ class TestStringMethods(TestCase):
         self.assertRedirects(response, reverse("index"), status_code=302,
                              target_status_code=200, msg_prefix='', fetch_redirect_response=True)
 
-        self.client.post(reverse("post", kwargs={
+        self.client.post(reverse("add_comment", kwargs={
                          'username': self.userBy['username'], 'post_id': 1}), {'text': self.comment})
 
     def test_add_new_user(self):
