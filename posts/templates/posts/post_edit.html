@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block content %}
+<main role="main" class="container">
+        <div class="row">
+                <div class="col-md-12">
+                        <!-- Пост -->
+                        <div class="card mb-12 mt-1 shadow-sm">
+                                <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="card-body">
+                                                <p class="card-text"></p>
+                                                <!-- Текст поста -->
+                                                <p>{{ form.text }}</p>
+                                                <br>
+                                                {{ form.group }}
+                                                <br>
+                                                {{ form.image }}
+                                                <br>
+                                                <hr>
+                                                {% thumbnail post.image "100x100" crop="center" as im %}
+                                                        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                                                {% endthumbnail %}
+                                                <br>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="btn-group ">
+                                                                <input type="submit" name="edit_post"
+                                                                        value="Редактировать запись">
+
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </form>
+                        </div>
+                </div>
+        </div>
+</main>
+{% endblock content %}

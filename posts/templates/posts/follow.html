@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %} Посты автора {% endblock %}
+
+{% block content %}
+
+<main role="main" class="container">
+
+    {% include "posts/menu.html" with index=True %}
+
+    <div class="row">
+        <h1> Последние обновления на сайте</h1>
+        {% if messages %}
+        <ul>
+            {% for mess in messages %}
+            <li style="color: red; list-style-type: none;">{{ mess }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% for post in page %}
+        {% include "posts/post_item.html" with post=post %}
+        {% endfor %}
+
+        {% if page.has_other_pages %}
+        {% include "posts/paginator.html" with items=page paginator=paginator%}
+        {% endif %}
+
+    </div>
+</main>
+{% endblock %}
