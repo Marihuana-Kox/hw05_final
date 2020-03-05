@@ -30,20 +30,21 @@
                                                 </div>
                                         </li>
                                         <li class="list-group-item">
-                                                {% if user.is_authenticated and request.user != author %}      
-                                                        {% if following %}
-                                                        <a class="btn btn-lg btn-light" 
-                                                                href="{% url 'profile_unfollow' author.username %}" role="button"> 
-                                                                Отписаться 
-                                                        </a> 
-                                                        {% else %}
-                                                        <a class="btn btn-lg btn-primary" 
-                                                                href="{% url 'profile_follow' author.username %}" role="button">
-                                                        Подписаться 
-                                                        </a>
-                                                        {% endif %}
-                                                {% endif %}     
-                                            </li>
+                                                {% if user.is_authenticated and request.user != author %}
+                                                {% if following %}
+                                                <a class="btn btn-lg btn-light"
+                                                        href="{% url 'profile_unfollow' author.username %}"
+                                                        role="button">
+                                                        Отписаться
+                                                </a>
+                                                {% else %}
+                                                <a class="btn btn-lg btn-primary"
+                                                        href="{% url 'profile_follow' author.username %}" role="button">
+                                                        Подписаться
+                                                </a>
+                                                {% endif %}
+                                                {% endif %}
+                                        </li>
                                 </ul>
                         </div>
                 </div>
@@ -61,7 +62,7 @@
                         {% for post in page %}
                         <!-- Начало блока с отдельным постом -->
                         {% include "posts/post_item.html" with post=post %}
-                        
+
                         <!-- Конец блока с отдельным постом -->
                         {% endfor %}
                         <!-- Остальные посты -->

@@ -41,8 +41,9 @@ def profile(request, username):
     post_user_list = Post.objects.filter(author=author)
     count = post_user_list.count()
     following = False
-    if Follow.objects.filter(user=request.user, author=author).exists():
-        following = True
+    if request.user.is_authenticated:
+        if Follow.objects.filter(user=request.user, author=author).exists():
+            following = True
     paginator = Paginator(post_user_list.order_by("-pub_date"), 8)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -55,8 +56,9 @@ def post_view(request, username, post_id):
     count_author = Follow.objects.filter(author=author).count()
     count_user = Follow.objects.filter(user=author).count()
     following = False
-    if Follow.objects.filter(user=request.user, author=author).exists():
-        following = True
+    if request.user.is_authenticated:
+        if Follow.objects.filter(user=request.user, author=author).exists():
+            following = True
     count = Post.objects.filter(author=author).count()
     items = Comment.objects.filter(post_id=post.pk).order_by("-created")
     form = CommentForm()

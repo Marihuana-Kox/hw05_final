@@ -1,11 +1,11 @@
-{% if user.is_authenticated %} 
+{% if user.is_authenticated %}
 
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link {% if index %}active{% endif %}" href="/">Все авторы</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link {% if follow %}active{% endif %}" href="/follow">Избранные авторы</a>
-        </li>
-    </ul>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link {% if index %}active{% endif %}" href="/">Все авторы</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if follow %}active{% endif %}" href="/follow">Избранные авторы</a>
+    </li>
+</ul>
 {% endif %}
