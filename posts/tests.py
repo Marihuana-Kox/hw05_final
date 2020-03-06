@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core import mail
 from django.http import response
 from django.contrib.auth import logout
+from django.core.cache import cache
 
 USER_BY = {'username': 'testuser', 'email': 'testuser@user.com',
            'password': 'Fa123456', 'password1': 'Fa123456', 'password2': 'Fa123456'}
@@ -31,6 +32,7 @@ class TestStringMethods(TestCase):
             "/auth/login/", {'username': 'testuser', 'password': 'Fa123456'})
         print("Пользователь авторизован")
         self.client.post(reverse("new_post"), {'text': TEST_POST})
+        cache.clear()
         response = self.client.get(reverse("index"))
         self.assertContains(response, TEST_POST, count=1,
                             status_code=200, msg_prefix='Поста на INDEX странице нет')
@@ -141,15 +143,24 @@ class TestStringMethods(TestCase):
         """Проверка срабатывания кеширования"""
         self.client.post(reverse("post_edit", kwargs={
                          'username': USER_BY['username'], 'post_id': 1}), {'text': 'My best Editen text!'})
-        response = self.client.get(
-            reverse("post", kwargs={'username': USER_BY['username'], 'post_id': 1}))
-        self.assertContains(response, 'My best Editen text!', count=1,
-                            status_code=200, msg_prefix='Поста на post странице нет', html=False)
-        print("Отредактированый пост на post странице минуя кеш")
         response = self.client.get(reverse("index"))
         self.assertContains(response, 'My best Editen text!', count=0)
         print(
             "Отредактированый пост на главной странице не отображается, кешируется старый")
+        cache.clear()
+        response = self.client.get(reverse("index"))
+        self.assertContains(response, 'My best Editen text!', count=1)
+        print("Отредактированый пост на post странице минуя кеш")
+
+    def test_cache_index_page(self):
+        """Проверка срабатывания кеширования второй вариант"""
+        cache.set('index_page', COMMENT)
+        cache.set('index_page_2', 'Two comment')
+        response = cache.get('index_page_2')
+        self.assertNotEqual(response, COMMENT)
+        # cache.clear()
+        response = cache.get('index_page')
+        self.assertEqual(response, COMMENT)
 
 
 class TestNotViewPage(TestCase):

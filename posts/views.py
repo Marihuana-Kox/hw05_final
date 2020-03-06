@@ -11,6 +11,7 @@ from django.views.decorators.cache import cache_page
 from django.http import request
 
 from collections import Counter
+from django.db.models import Count
 
 
 @cache_page(20)
