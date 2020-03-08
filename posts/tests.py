@@ -6,6 +6,9 @@ from django.http import response
 from django.contrib.auth import logout
 from django.core.cache import cache
 
+""" С fixtures я не смог разобратся, написано что это очень просто но у меня не получиолось
+буду благодарен за мастеокласс по этому модулю """
+
 USER_BY = {'username': 'testuser', 'email': 'testuser@user.com',
            'password': 'Fa123456', 'password1': 'Fa123456', 'password2': 'Fa123456'}
 USER_DY = {'username': 'testuser_d', 'email': 'testuser@user.com',
@@ -20,16 +23,12 @@ class TestStringMethods(TestCase):
     def setUp(self):
         """Создание пользователя, авторизация и добавление поста с проверкой на главной странице"""
         self.client = Client()
-        response = self.client.post(
-            reverse("signup"), USER_BY, follow=True)
-        self.assertRedirects(response, "/auth/login/",
-                             status_code=302, target_status_code=200)
-        User.objects.get(username=USER_BY['username'])
-        self.assertRedirects(response, "/auth/login/",
+        response = self.client.post(reverse("signup"), USER_BY, follow=True)
+        self.assertRedirects(response, reverse("login"),
                              status_code=302, target_status_code=200)
         print("Новый пользователь создан")
         response = self.client.post(
-            "/auth/login/", {'username': 'testuser', 'password': 'Fa123456'})
+            "/auth/login/", {'username': USER_BY['username'], 'password': USER_BY['password']})
         print("Пользователь авторизован")
         self.client.post(reverse("new_post"), {'text': TEST_POST})
         cache.clear()
@@ -40,7 +39,7 @@ class TestStringMethods(TestCase):
 
     def test_add_img(self):
         """Создание поста с картинкой"""
-        with open("media/posts/14.jpg", "rb") as fp:
+        with open("test_files/image.png", "rb") as fp:
             response = self.client.post(
                 reverse("new_post"), {'text': TEST_POST_D, 'image': fp})
         self.assertRedirects(response, reverse("index"), status_code=302,
@@ -58,7 +57,8 @@ class TestStringMethods(TestCase):
             "/auth/login/", {'username': 'testuser_d', 'password': 'Fa123456'})
         print("Второй пользователь авторизован")
 
-        response = self.client.get("/testuser/follow", follow=True)
+        response = self.client.post(reverse("profile_follow", kwargs={
+                                    'username': USER_BY['username']}), follow=True)
         print("Подписка на АВТОРА")
         self.assertRedirects(response, reverse("follow_index"),
                              status_code=302, target_status_code=200)
@@ -77,7 +77,7 @@ class TestStringMethods(TestCase):
 
     def test_no_picture_ban(self):
         """Добавление не картинки, к посту"""
-        with open("media/posts/no_image.txt", "rb") as fp:
+        with open("test_files/test_file.txt", "rb") as fp:
             response = self.client.post(
                 reverse("new_post"), {'text': TEST_POST, 'image': fp})
         response = self.client.get(reverse("index"))
