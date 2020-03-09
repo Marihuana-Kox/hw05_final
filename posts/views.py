@@ -78,35 +78,28 @@ def server_error(request):
 
 @login_required
 def delete_post(request, username, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    author = get_object_or_404(User, username=username)
+    post = get_object_or_404(Post, pk=post_id, author__username=username)
     post.delete()
     messages.success(
         request, "Ваше пост удален!", extra_tags='', fail_silently=False)
-    return redirect("profile", username=author)
+    return redirect("profile", username=post.author)
 
 
 @login_required
 def post_edit(request, username, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    author = get_object_or_404(User, username=username)
+    post = get_object_or_404(Post, pk=post_id, author__username=username)
     if request.method == "POST":
-        form = PostForm(request.POST or None,
-                        files=request.FILES or None, instance=post)
+        form = PostForm(request.POST or None, files=request.FILES or None, instance=post)
         if form.is_valid():
-            post = form.save()
-            form.author = request.user
-            if form.save():
-                messages.success(
-                    request, "Ваше сообщение отредактировано!", extra_tags='', fail_silently=False)
-            else:
-                messages.success(request, "Ошибка редактиорования!",
-                                 extra_tags='', fail_silently=False)
-            return redirect("post", username=author, post_id=post.pk)
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success( request, "Ваше сообщение отредактировано!", extra_tags='', fail_silently=False)
+            return redirect("post", username=post.author, post_id=post.pk)
         else:
             messages.success(request, "Валидация формы не прошла!",
                              extra_tags='', fail_silently=False)
-            return redirect("post", username=author, post_id=post.pk)
+            return redirect("post", username=post.author, post_id=post.pk)
     else:
         form = PostForm(instance=post)
     return render(request, "posts/post_edit.html", {"form": form, "post": post})
@@ -119,8 +112,6 @@ def new_post(request):
                         files=request.FILES or None)
         if form.is_valid():
             post = form.save(commit=False)
-            post.text = form.cleaned_data["text"]
-            post.group = form.cleaned_data["group"]
             post.author = request.user
             post.save()
             return redirect("/")
@@ -152,9 +143,8 @@ def add_comment(request, username, post_id):
 @login_required
 def follow_index(request):
     follow = Follow.objects.filter(user=request.user)
-    values_list = [favorite.author for favorite in follow]
-    post_list = Post.objects.filter(author__in=values_list)
-    paginator = Paginator(post_list.order_by("-pub_date"), 8)
+    post = Post.objects.filter(author__following__in=follow)
+    paginator = Paginator(post.order_by("-pub_date"), 8)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, "posts/follow.html", {"page": page, "paginator": paginator})

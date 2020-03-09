@@ -8,7 +8,7 @@ class PostAdmin(admin.ModelAdmin):
     # добавляем интерфейс для поиска по тексту постов
     search_fields = ("text",)
     # добавляем возможность фильтрации по дате
-    list_filter = ("pub_date",)
+    list_filter = ("pub_date", "author")
     # это свойство сработает для всех колонок: где пусто - там будет эта строка
     empty_value_display = '-пусто-'
 

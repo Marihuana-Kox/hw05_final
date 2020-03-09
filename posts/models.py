@@ -15,7 +15,7 @@ class Group(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField("Название", max_length=100, default='Название текста')
+    title = models.CharField("Название текста", max_length=100, default="Название текста")
     text = models.TextField()
     pub_date = models.DateTimeField("date published", auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="author_posts")
@@ -24,7 +24,7 @@ class Post(models.Model):
     index_page = models.CharField(max_length=512, blank=True, db_index=True)
 
     def __str__(self):
-        return self.title
+        return (self.title, self.pk)
 
 
 class Comment(models.Model):

@@ -7,13 +7,14 @@
     {% endthumbnail %}
     <!-- Отображение текста поста -->
     <div class="card-body">
-            <p class="card-text">
+            <div class="card-text">
+                    <h1>{{ post.title }}</h1>
                     <!-- Ссылка на автора через @ -->
                     <a name="post_{{ post.id }}" href="{% url 'profile' post.author.username %}">
                             <strong class="d-block text-gray-dark">@{{ post.author }}</strong>
                     </a>
-                    {{ post.text|linebreaksbr }}
-            </p>
+                    <p>{{ post.text|linebreaksbr }}</p>
+            </div>
 
             <!-- Если пост относится к какому-нибудь сообществу, то отобразим ссылку на него через # -->
             {% if post.group %}
@@ -37,6 +38,10 @@
                             <a class="btn btn-sm text-muted" href="{% url 'post_edit' post.author.username post.id %}"
                                     role="button">
                                     Редактировать
+                            </a>
+                            <a class="btn btn-sm text-muted red-text" href="{% url 'delete_post' post.author.username post.id %}"
+                                    role="button" >
+                                    Удалить
                             </a>
                         
                             {% endif %}
