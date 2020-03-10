@@ -5,6 +5,7 @@ from django.core import mail
 from django.http import response
 from django.contrib.auth import logout
 from django.core.cache import cache
+from django.contrib.gis import serializers 
 
 """ С fixtures я не смог разобратся, написано что это очень просто но у меня не получиолось
 буду благодарен за мастеокласс по этому модулю """
@@ -19,10 +20,12 @@ COMMENT = 'My best comment!'
 
 
 class TestStringMethods(TestCase):
-
+    fixtures = ['testdata.json', 'auth.user']
     def setUp(self):
         """Создание пользователя, авторизация и добавление поста с проверкой на главной странице"""
         self.client = Client()
+        # all_objects = list(self.fixtures.objects.all())
+        # data = serializers.serialize('json', all_objects)
         response = self.client.post(reverse("signup"), USER_BY, follow=True)
         self.assertRedirects(response, reverse("login"),
                              status_code=302, target_status_code=200)

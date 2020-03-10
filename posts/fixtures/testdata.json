@@ -1,0 +1,74 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$TArEcONkWP1Q$iGkVrYQPhUBT1sJe2c1rgV7/x7AuFCz7IwrejRUvHbc=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "yakuhs@yandex.ru",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-03-10T06:17:58.540Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$3vWnthbytemL$5SIEJdul6B/5gxzLFn7NtEHN75MSmPe6SUKxroyFzRI=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "maikl",
+        "first_name": "",
+        "last_name": "",
+        "email": "ykushew@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-03-10T06:17:58.545Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$OMxXu0wZU033$UJof+jyTU6yI2CV1DmJaet1u1kCFU73dyWdyKc7CWao=",
+        "last_login": "2020-03-09T12:35:50.142Z",
+        "is_superuser": false,
+        "username": "DontTrump",
+        "first_name": "\u0414\u043e\u043d\u0430\u043b\u044c\u0434",
+        "last_name": "\u0422\u0440\u0430\u043c\u043f",
+        "email": "ykushew@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-02-22T19:03:25.294Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$sQR3v9umeiyC$gRYfb4tWNHqg+DlaZkYD7nnHL/oEngRB8jL4uxFE3Io=",
+        "last_login": "2020-03-06T10:40:58.310Z",
+        "is_superuser": false,
+        "username": "Fenichka",
+        "first_name": "\u0424\u0435\u043d\u044f",
+        "last_name": "\u041f\u0430\u043b\u043a\u0438\u043d",
+        "email": "yakuhs@yandex.ru",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-03-01T12:12:39.758Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]
